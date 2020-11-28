@@ -1,4 +1,4 @@
-# 📦 webpack Boilerplate
+# 📦 webpack5 Boilerplate
 modified from git@github.com:taniarascia/webpack-boilerplate
 
 Minimal Webpack 5 boilerplate with a hot dev server and an optimized production build.
