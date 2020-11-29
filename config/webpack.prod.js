@@ -10,7 +10,6 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 
 const output = {
   path: paths.build,
-  publicPath: '/',
   filename: 'js/[name].bundle.js',
   assetModuleFilename: 'images/[hash][ext][query]'
 }

@@ -3,17 +3,22 @@ const paths = require('./paths')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin')
 
 // Input, Output
 const entry = [paths.src + '/index.js']
 const output = {
-  path: paths.build,
-  filename: '[name].bundle.js',
-  publicPath: '/'
+  publicPath: process.env.PUBLIC_PATH
 }
 
 // JavaScript: Use Babel to transpile JavaScript files
-const ruleJs = { test: /\.js$/, exclude: /node_modules/, use: ['babel-loader'] }
+// const ruleJs = { test: /\.js$/, exclude: /node_modules/, use: ['babel-loader'] }
+const ruleJs = {
+  test: /\.(js|jsx)$/,
+  exclude: /node_modules/,
+  use: ['babel-loader']
+}
+
 // Styles: Inject CSS into the head with source maps
 const ruleCss = {
   test: /\.(css)$/,
@@ -55,8 +60,17 @@ const htmlWebpackPlugin = new HtmlWebpackPlugin({
   template: paths.src + '/template.html', // template file
   filename: 'index.html' // output file
 })
+const moduleFederationPlugin = new ModuleFederationPlugin({
+  name: 'somemodulename',
+  filename: 'remoteEntry.js',
+  remotes: {},
+  exposes: {
+    './SomeComponent': './src/components/some-component'
+  },
+  shared: require('../package.json').dependencies
+})
 
-const plugins = [cleanWebpackPlugin, copyWebpackPlugin, htmlWebpackPlugin]
+const plugins = [cleanWebpackPlugin, copyWebpackPlugin, htmlWebpackPlugin, moduleFederationPlugin]
 
 module.exports = {
   entry,
