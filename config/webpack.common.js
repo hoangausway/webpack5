@@ -3,7 +3,6 @@ const paths = require('./paths')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin')
 
 // Input, Output
 const entry = [paths.src + '/index.js']
@@ -60,17 +59,8 @@ const htmlWebpackPlugin = new HtmlWebpackPlugin({
   template: paths.src + '/template.html', // template file
   filename: 'index.html' // output file
 })
-const moduleFederationPlugin = new ModuleFederationPlugin({
-  name: 'somemodulename',
-  filename: 'remoteEntry.js',
-  remotes: {},
-  exposes: {
-    './SomeComponent': './src/components/some-component'
-  },
-  shared: require('../package.json').dependencies
-})
 
-const plugins = [cleanWebpackPlugin, copyWebpackPlugin, htmlWebpackPlugin, moduleFederationPlugin]
+const plugins = [cleanWebpackPlugin, copyWebpackPlugin, htmlWebpackPlugin]
 
 module.exports = {
   entry,
